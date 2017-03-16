@@ -61,6 +61,7 @@ module RSpotify
       begin
         response = RestClient.send(verb, url, *params)
       rescue RestClient::Unauthorized
+        raise e if e.response =~ /access token expired/
         if @client_token
           authenticate(@client_id, @client_secret)
           response = RestClient.send(verb, url, *params)
